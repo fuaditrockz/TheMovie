@@ -9,6 +9,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -17,10 +18,14 @@ import Home from './screens/Home';
 const Stack = createStackNavigator();
 
 const App = () => {
+  React.useEffect(() => {
+    SplashScreen.hide();
+  });
+
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
