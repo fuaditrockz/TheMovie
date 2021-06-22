@@ -1,14 +1,5 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,7 +13,6 @@ const App = () => {
     SplashScreen.hide();
   });
 
-  const isDarkMode = useColorScheme() === 'dark';
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

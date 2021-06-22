@@ -18,9 +18,6 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
 const Section: React.FC<{
   title: string;
 }> = ({children, title}) => {
