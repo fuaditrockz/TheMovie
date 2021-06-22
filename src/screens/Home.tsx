@@ -49,7 +49,7 @@ const Section: React.FC<{
   );
 };
 
-const App = () => {
+const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Home;
