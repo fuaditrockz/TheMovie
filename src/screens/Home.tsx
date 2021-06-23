@@ -2,7 +2,7 @@
  * @format
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -13,9 +13,14 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import { TheMovieContext } from '../context';
 
 const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  const testData = useContext(TheMovieContext);
+
+  console.log('DATA FROM HOME', testData.popular.results)
 
   return (
     <SafeAreaView style={styles.bgBlack}>
