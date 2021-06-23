@@ -18,14 +18,14 @@ const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.bgBlack}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Explore</Text>
         </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Explore</Text>
+        <View style={styles.bgBlack}>
+          <Text style={styles.normalText}>Explore</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -33,7 +33,7 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  bgBlack: {
     backgroundColor: '#27262b',
   },
   header: {
@@ -45,6 +45,11 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: '#f2f2f2',
     fontFamily: 'SF-Pro-Display-Black'
+  },
+  normalText: {
+    fontSize: 14,
+    fontFamily: 'SF-Pro-Display-Medium',
+    color: '#fff'
   }
 })
 
