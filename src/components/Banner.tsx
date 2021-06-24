@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import Octicon from 'react-native-vector-icons/Octicons';
 
 import { textStyles } from '../constants/styles'
-import { useGetGenreName } from '../helpers'
 interface BannerProps {
   imageUrl: string;
   title: string;
@@ -42,7 +41,11 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title, overview, genres }) =>
     return data.map((i, index) => {
       console.log(i.name)
       return (
-        <>
+        <View key={index} style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center'
+        }}>
           <Text style={[textStyles.genre, { textAlign: 'center', marginHorizontal: 5 }]}>
             {i.name}
           </Text>
@@ -55,7 +58,7 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title, overview, genres }) =>
               top: 10,
             }}
           />}
-        </>
+        </View>
       )
     })
   };
