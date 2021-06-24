@@ -21,7 +21,6 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
     const response = await fetch(API_URL);
     const data = await response.json();
     setPopularMovies(data);
-    console.log(data.results);
   };
 
   return (

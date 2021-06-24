@@ -16,7 +16,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { TheMovieContext } from '../context';
 
-import { Banner, Loading } from '../components'
+import { textStyles } from '../constants/styles'
+import { Banner, Loading, Card } from '../components'
 
 const Home = () => {
   const { popular } = useContext(TheMovieContext);
@@ -26,14 +27,41 @@ const Home = () => {
   } else {
     return (
       <SafeAreaView style={styles.bgBlack}>
-        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
           <LinearGradient
             colors={['rgba(39, 38, 43, 0.9)',  'rgba(39, 38, 43, 0.7)', 'rgba(39, 38, 43, 0.5)', 'rgba(39, 38, 43, 0)']}
             style={styles.header}
           >
-            <Text style={styles.headerText}>Explore</Text>
-          </LinearGradient>
-          {popular && <Banner imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`} />}
+          <Text style={textStyles.header}>Explore</Text>
+        </LinearGradient>
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
+          {popular && (
+            <Banner
+              title={popular.results[0].original_title}
+              overview={`${popular.results[0].overview.substring(0, 90)}...`}
+              imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
+              genres={popular.results[0].genre_ids}
+            />
+          )}
+          <View style={styles.title}>
+            <Text style={textStyles.section_title}>Popular Movies</Text>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+          </ScrollView>
+          <View style={styles.title}>
+            <Text style={textStyles.section_title}>Popular Movies</Text>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+          </ScrollView>
         </ScrollView>
       </SafeAreaView>
     );
@@ -47,7 +75,7 @@ const styles = StyleSheet.create({
   header: {
     /* backgroundColor: '#27262b', */
     paddingTop: 0,
-    paddingBottom: 30,
+    paddingBottom: 50,
     paddingHorizontal: 10,
     position: 'absolute',
     top: 49.6,
@@ -55,16 +83,10 @@ const styles = StyleSheet.create({
     zIndex: 99,
     width: '100%',
   },
-  headerText: {
-    fontSize: 35,
-    color: '#f2f2f2',
-    fontFamily: 'SF-Pro-Display-Black'
+  title: {
+    paddingHorizontal: 10,
+    paddingBottom: 0
   },
-  normalText: {
-    fontSize: 14,
-    fontFamily: 'SF-Pro-Display-Medium',
-    color: '#fff'
-  }
 })
 
 export default Home;
