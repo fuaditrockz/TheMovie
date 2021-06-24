@@ -13,28 +13,31 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { TheMovieContext } from '../context';
 
+import { Banner, Loading } from '../components'
+
 const Home = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { popular } = useContext(TheMovieContext);
 
-  const testData = useContext(TheMovieContext);
-
-  console.log('DATA FROM HOME', testData.popular.results)
-
-  return (
-    <SafeAreaView style={styles.bgBlack}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Explore</Text>
-        </View>
-        <View style={styles.bgBlack}>
-          <Text style={styles.normalText}>Explore</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  if (!popular) {
+    return <Loading />
+  } else {
+    return (
+      <SafeAreaView style={styles.bgBlack}>
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
+          <LinearGradient
+            colors={['rgba(39, 38, 43, 0.9)',  'rgba(39, 38, 43, 0.7)', 'rgba(39, 38, 43, 0.5)', 'rgba(39, 38, 43, 0)']}
+            style={styles.header}
+          >
+            <Text style={styles.headerText}>Explore</Text>
+          </LinearGradient>
+          {popular && <Banner imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`} />}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -42,9 +45,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#27262b',
   },
   header: {
-    backgroundColor: '#27262b',
-    paddingVertical: 10,
+    /* backgroundColor: '#27262b', */
+    paddingTop: 0,
+    paddingBottom: 30,
     paddingHorizontal: 10,
+    position: 'absolute',
+    top: 49.6,
+    left: 0,
+    zIndex: 99,
+    width: '100%',
   },
   headerText: {
     fontSize: 35,
