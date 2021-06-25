@@ -34,23 +34,19 @@ const Home = () => {
           <Text style={textStyles.header}>Explore</Text>
         </LinearGradient>
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
-          {popular && (
-            <Banner
-              title={popular.results[0].original_title}
-              overview={`${popular.results[0].overview.substring(0, 90)}...`}
-              imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
-              genres={popular.results[0].genre_ids}
-            />
-          )}
+          <Banner
+            title={popular.results[0].original_title}
+            overview={`${popular.results[0].overview.substring(0, 90)}...`}
+            imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
+            genres={popular.results[0].genre_ids}
+          />
           <View style={styles.title}>
             <Text style={textStyles.section_title}>Popular Movies</Text>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {popular.results.map((i, index) => (
+              <Card imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`} key={index} />
+            ))}
           </ScrollView>
           <View style={styles.title}>
             <Text style={textStyles.section_title}>Popular Movies</Text>

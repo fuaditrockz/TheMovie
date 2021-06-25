@@ -1,12 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-const Card = () => {
+interface CardProps {
+  imageUrl: string;
+  title: string;
+  overview: string;
+  genres: Array<number>;
+}
+
+const Card: React.FC<CardProps> = ({ imageUrl }) => {
   return (
     <View style={styles.container}>
-      <Text>
-
-      </Text>
+      <Image source={{ uri: imageUrl }} style={styles.backgroundImage} />
     </View>
   );
 };
@@ -17,6 +22,10 @@ const styles = StyleSheet.create({
     width: 110,
     backgroundColor: '#fff',
     marginLeft: 10,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
   },
 });
 
