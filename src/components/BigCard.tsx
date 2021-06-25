@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-interface CardProps {
+interface BigCardProps {
   imageUrl: string;
 }
 
-const Card: React.FC<CardProps> = ({ imageUrl }) => {
+const BigCard: React.FC<BigCardProps> = ({ imageUrl }) => {
   return (
     <View style={styles.container}>
       <Image source={{ uri: imageUrl }} style={styles.backgroundImage} />
@@ -15,17 +15,17 @@ const Card: React.FC<CardProps> = ({ imageUrl }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 170,
-    width: 115,
+    height: 230,
+    width: 150,
     backgroundColor: '#fff',
     marginLeft: 10,
-    borderRadius: 2,
+    borderRadius: 4,
   },
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    borderRadius: 2,
+    borderRadius: 4,
   },
 });
 
-export default Card;
+export default BigCard;

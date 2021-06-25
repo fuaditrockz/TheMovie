@@ -12,21 +12,61 @@ const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
 const TheMovieContext = createContext(null);
 
 const TheMovieContextProvider: FunctionComponent = ({children}) => {
-  const [popularMovies, setPopularMovies] = useState(null)
+  const [dataMovies, setDataMovies] = useState({
+    popular: null,
+    top_rated: null,
+    upcoming: null,
+    now_playing: null,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    loadPopularMovies();
+    fetchDataMovies();
   }, []);
 
-  const loadPopularMovies = async () => {
-    const response = await fetch(API_URL);
+  const fetchMovies = async (moviesType: string) => {
+    const url = `https://api.themoviedb.org/3/movie/${moviesType}?api_key=${API_KEY}`;
+    const response = await fetch(url);
     const data = await response.json();
-    setPopularMovies(data);
+    if (data.status_code === 34 || data.status_code === 7) {
+      throw new Error("error");
+    } else {
+      console.log('XXXXXXX')
+      return data;
+    }
+  }
+
+  const fetchDataMovies = async () => {
+    setIsLoading(true);
+    try {
+      Promise.all([
+        fetchMovies('popular'),
+        fetchMovies('top_rated'),
+        fetchMovies('upcoming'),
+        fetchMovies('now_playing')
+      ]).then((i:Array<object>) => {
+        setDataMovies({
+          popular: i[0],
+          top_rated: i[1],
+          upcoming: i[2],
+          now_playing: i[3],
+        })
+      })
+    } catch (error) {
+      setIsError(true)
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   };
 
+  console.log('RENDER', dataMovies)
   return (
     <TheMovieContext.Provider value={{
-      popular: popularMovies,
+      isError,
+      isLoading,
+      movies: dataMovies,
     }}>
       {children}
     </TheMovieContext.Provider>

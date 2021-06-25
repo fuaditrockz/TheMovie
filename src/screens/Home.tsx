@@ -14,7 +14,6 @@ import {
   StyleSheet
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { TheMovieContext } from '../context';
 import { textStyles } from '../constants/styles'
@@ -41,9 +40,9 @@ const Section: React.FC<SectionProps> = ({ sectionData, title }) => {
 }
 
 const Home = () => {
-  const { popular } = useContext(TheMovieContext);
+  const { isLoading, movies } = useContext(TheMovieContext);
 
-  if (!popular) {
+  if (isLoading) {
     return <Loading />
   } else {
     return (
@@ -56,13 +55,15 @@ const Home = () => {
         </LinearGradient>
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
           <Banner
-            title={popular.results[0].original_title}
-            overview={`${popular.results[0].overview.substring(0, 90)}...`}
-            imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
-            genres={popular.results[0].genre_ids}
+            title={movies.popular.results[0].original_title}
+            overview={`${movies.popular.results[0].overview.substring(0, 90)}...`}
+            imageUrl={`https://image.tmdb.org/t/p/w500${movies.popular.results[0].poster_path}`}
+            genres={movies.popular.results[0].genre_ids}
           />
-          <Section title="Popular Movies" sectionData={popular.results} />
-          <Section title="Popular Movies" sectionData={popular.results} />          
+          <Section title="Popular Movies" sectionData={movies.popular.results} />
+          <Section title="Top Rated Movies" sectionData={movies.top_rated.results} />
+          <Section title="Upcoming Movies" sectionData={movies.upcoming.results} />
+          <Section title="Now Playing Movies" sectionData={movies.now_playing.results} />
         </ScrollView>
       </SafeAreaView>
     );
