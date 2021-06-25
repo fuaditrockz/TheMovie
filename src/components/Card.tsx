@@ -1,22 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 interface CardProps {
   imageUrl: string;
+  isBigCard: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ imageUrl }) => {
+const Card: React.FC<CardProps> = ({ imageUrl, isBigCard }) => {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageUrl }} style={styles.backgroundImage} />
-    </View>
+    <TouchableOpacity onPress={() => navigation.navigate('MovieDetails')}>
+      <View style={[
+        styles.container,
+        {
+          height: isBigCard ? 230 : 170,
+          width: isBigCard ? 150 : 115,
+        }
+      ]}>
+        <Image source={{ uri: imageUrl }} style={styles.backgroundImage} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: 170,
-    width: 115,
     backgroundColor: '#fff',
     marginLeft: 10,
     borderRadius: 2,

@@ -22,9 +22,10 @@ import { Banner, Loading, Card } from '../components'
 interface SectionProps {
   sectionData: Array<string>;
   title: string;
+  isBigCard: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ sectionData, title }) => {
+const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard }) => {
   return (
     <View style={{ marginBottom: 20 }}>
       <View style={styles.title}>
@@ -32,7 +33,11 @@ const Section: React.FC<SectionProps> = ({ sectionData, title }) => {
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {sectionData.map((i, index) => (
-          <Card imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`} key={index} />
+          <Card
+            imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`}
+            key={index}
+            isBigCard={isBigCard}
+          />
         ))}
       </ScrollView>
     </View>
@@ -47,10 +52,10 @@ const Home = () => {
   } else {
     return (
       <SafeAreaView style={styles.bgBlack}>
-          <LinearGradient
-            colors={['rgba(39, 38, 43, 0.9)',  'rgba(39, 38, 43, 0.7)', 'rgba(39, 38, 43, 0.5)', 'rgba(39, 38, 43, 0)']}
-            style={styles.header}
-          >
+        <LinearGradient
+          colors={['rgba(39, 38, 43, 0.9)',  'rgba(39, 38, 43, 0.7)', 'rgba(39, 38, 43, 0.5)', 'rgba(39, 38, 43, 0)']}
+          style={styles.header}
+        >
           <Text style={textStyles.header}>Explore</Text>
         </LinearGradient>
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
@@ -60,10 +65,10 @@ const Home = () => {
             imageUrl={`https://image.tmdb.org/t/p/w500${movies.popular.results[0].poster_path}`}
             genres={movies.popular.results[0].genre_ids}
           />
-          <Section title="Popular Movies" sectionData={movies.popular.results} />
-          <Section title="Top Rated Movies" sectionData={movies.top_rated.results} />
-          <Section title="Upcoming Movies" sectionData={movies.upcoming.results} />
-          <Section title="Now Playing Movies" sectionData={movies.now_playing.results} />
+          <Section title="Popular Movies" sectionData={movies.popular.results} isBigCard />
+          <Section title="Top Rated Movies" sectionData={movies.top_rated.results} isBigCard={false} />
+          <Section title="Upcoming Movies" sectionData={movies.upcoming.results} isBigCard={false} />
+          <Section title="Now Playing Movies" sectionData={movies.now_playing.results} isBigCard={false} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -75,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#27262b',
   },
   header: {
-    /* backgroundColor: '#27262b', */
     paddingTop: 0,
     paddingBottom: 50,
     paddingHorizontal: 10,
