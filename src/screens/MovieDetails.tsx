@@ -14,3 +14,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#27262b',
   },
 })
+
+export default MovieDetails;
