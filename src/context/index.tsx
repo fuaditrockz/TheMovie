@@ -4,6 +4,7 @@ import React, {
   createContext,
   FunctionComponent
 } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_KEY = '090cfaff14e0b47124a29630da55b4a0';
 const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;

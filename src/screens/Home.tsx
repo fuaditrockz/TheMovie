@@ -14,10 +14,31 @@ import {
   StyleSheet
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { TheMovieContext } from '../context';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { TheMovieContext } from '../context';
 import { textStyles } from '../constants/styles'
 import { Banner, Loading, Card } from '../components'
+
+interface SectionProps {
+  sectionData: Array<string>;
+  title: string;
+}
+
+const Section: React.FC<SectionProps> = ({ sectionData, title }) => {
+  return (
+    <View style={{ marginBottom: 20 }}>
+      <View style={styles.title}>
+        <Text style={textStyles.section_title}>{title}</Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {sectionData.map((i, index) => (
+          <Card imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`} key={index} />
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
 
 const Home = () => {
   const { popular } = useContext(TheMovieContext);
@@ -40,24 +61,8 @@ const Home = () => {
             imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
             genres={popular.results[0].genre_ids}
           />
-          <View style={styles.title}>
-            <Text style={textStyles.section_title}>Popular Movies</Text>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {popular.results.map((i, index) => (
-              <Card imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`} key={index} />
-            ))}
-          </ScrollView>
-          <View style={styles.title}>
-            <Text style={textStyles.section_title}>Popular Movies</Text>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-          </ScrollView>
+          <Section title="Popular Movies" sectionData={popular.results} />
+          <Section title="Popular Movies" sectionData={popular.results} />          
         </ScrollView>
       </SafeAreaView>
     );

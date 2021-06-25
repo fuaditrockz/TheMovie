@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 
 interface CardProps {
   imageUrl: string;
-  title: string;
-  overview: string;
-  genres: Array<number>;
 }
 
 const Card: React.FC<CardProps> = ({ imageUrl }) => {
