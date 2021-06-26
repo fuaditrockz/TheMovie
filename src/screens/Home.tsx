@@ -35,6 +35,7 @@ const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard }) => {
         {sectionData.map((i, index) => (
           <Card
             imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`}
+            data={i}
             key={index}
             isBigCard={isBigCard}
           />
