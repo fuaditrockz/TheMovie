@@ -2,14 +2,11 @@
  * @format
  */
 
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
-  useColorScheme,
   View,
-  Animated,
   Text,
   StyleSheet
 } from 'react-native';
