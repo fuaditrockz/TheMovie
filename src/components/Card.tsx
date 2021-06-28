@@ -21,7 +21,7 @@ const Card: React.FC<CardProps> = ({ imageUrl, isBigCard, data }) => {
         styles.container,
         {
           height: isBigCard ? 230 : 170,
-          width: isBigCard ? 150 : 115,
+          width: isBigCard ? 155 : 115,
           borderRadius: isBigCard ? 5 : 2,
         }
       ]}>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@logrocket/react-native": "^0.12.1",
     "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/netinfo": "^6.0.0",
     "@react-native-masked-view/masked-view": "^0.2.4",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^6.0.0-next.13",

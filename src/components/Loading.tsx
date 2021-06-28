@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
+import { textStyles } from '../constants/styles'
+
 const Banner = () => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#00ff00" />
+      <Text style={textStyles.normal}>
+        Preparing the data...
+      </Text>
     </View>
   );
 };

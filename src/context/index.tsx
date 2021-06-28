@@ -2,8 +2,9 @@ import React, {
   useState,
   useEffect,
   createContext,
-  FunctionComponent
+  FunctionComponent,
 } from 'react';
+import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_KEY = '090cfaff14e0b47124a29630da55b4a0';
@@ -22,17 +23,53 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    fetchDataMovies();
+    NetInfo.addEventListener(state => {
+      if (!state.isConnected) {
+        console.log('ONLINE')
+        SETUP_DATA();
+      } else {
+        console.log('OFFLINE')
+        getDataOffline();
+      }
+    })
   }, []);
+
+  const SETUP_DATA = async () => {
+    await fetchDataMovies();
+    await updateStorageData(dataMovies);
+    return
+  }
+
+  const updateStorageData = async (data) => {
+    await AsyncStorage.mergeItem('data_offline', JSON.stringify(data));
+    return
+  }
+
+  const setStorageData = async (data) => {
+    await AsyncStorage.setItem('data_offline', JSON.stringify(data));
+    return
+  }
+
+  const getDataOffline = async () => {
+    const data = await AsyncStorage.getItem('data_offline');
+    const parsedData = await JSON.parse(data);
+    if (parsedData || parsedData.popular) {
+      setDataMovies(parsedData);
+      setIsLoading(false);
+    } else {
+      setIsError(true);
+    }
+  }
 
   const fetchMovies = async (moviesType: string) => {
     const url = `https://api.themoviedb.org/3/movie/${moviesType}?api_key=${API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
+    
     if (data.status_code === 34 || data.status_code === 7) {
       throw new Error("error");
     } else {
-      console.log('XXXXXXX')
+      console.log('0')
       return data;
     }
   }
@@ -46,22 +83,23 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
         fetchMovies('upcoming'),
         fetchMovies('now_playing')
       ]).then((i:Array<object>) => {
+        console.log('1')
         setDataMovies({
           popular: i[0],
           top_rated: i[1],
           upcoming: i[2],
           now_playing: i[3],
-        })
+        });
+        return dataMovies;
       })
     } catch (error) {
       setIsError(true)
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 10000);
   };
 
-  console.log('RENDER', dataMovies)
   return (
     <TheMovieContext.Provider value={{
       isError,

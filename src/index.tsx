@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { TheMovieContextProvider } from './context';
 import Home from './screens/Home';
-import MovieDetails from './screens/MovieDetails'
+import MovieDetails from './screens/MovieDetails';
 
 const Stack = createStackNavigator();
 
