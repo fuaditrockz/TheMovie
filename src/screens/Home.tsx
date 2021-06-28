@@ -9,7 +9,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Image
+  Image,
+  useWindowDimensions,
+  StatusBar
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,32 +28,54 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard }) => {
+  const isOnline = () => {
+    let online;
+    NetInfo.addEventListener(state => {
+      online = state.isConnected
+    });
+    return online;
+  };
+
   return (
     <View style={{ marginBottom: 20 }}>
       <View style={styles.title}>
         <Text style={textStyles.section_title}>{title}</Text>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {sectionData.map((i, index) => (
-          <Card
-            imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`}
-            data={i}
-            key={index}
-            isBigCard={isBigCard}
-          />
-        ))}
-      </ScrollView>
+      {isOnline() ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {sectionData.map((i, index) => (
+            <Card
+              imageUrl={`https://image.tmdb.org/t/p/w500${i.poster_path}`}
+              data={i}
+              key={index}
+              isBigCard={isBigCard}
+            />
+          ))}
+        </ScrollView>
+      ) : (
+        <View style={{
+          minHeight: 110,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Text style={textStyles.normal}>
+            No content, please connect to the internet
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const Home = () => {
   const { isLoading, isError, movies } = useContext(TheMovieContext);
+  const statusBarHeight = StatusBar.currentHeight
 
   const renderBanner = () => {
     const {
       popular
     } = movies
+     
     if (popular) {
       return (
         <Banner
@@ -60,7 +84,7 @@ const Home = () => {
           imageUrl={`https://image.tmdb.org/t/p/w500${popular.results[0].poster_path}`}
           genres={popular.results[0].genre_ids}
         />
-      )
+      )  
     }
     return null
   }
@@ -89,7 +113,12 @@ const Home = () => {
       <SafeAreaView style={styles.bgBlack}>
         <LinearGradient
           colors={['rgba(39, 38, 43, 0.9)',  'rgba(39, 38, 43, 0.7)', 'rgba(39, 38, 43, 0.5)', 'rgba(39, 38, 43, 0)']}
-          style={styles.header}
+          style={[
+            styles.header,
+            {
+              top: statusBarHeight
+            }
+          ]}
         >
           <Text style={textStyles.header}>Explore</Text>
         </LinearGradient>
@@ -114,10 +143,10 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingHorizontal: 10,
     position: 'absolute',
-    top: 49.6,
     left: 0,
     zIndex: 99,
     width: '100%',
+    height: 100
   },
   title: {
     paddingHorizontal: 10,

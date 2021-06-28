@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Octicon from 'react-native-vector-icons/Octicons';
+import NetInfo from '@react-native-community/netinfo';
 
 import { textStyles } from '../constants/styles'
 interface BannerProps {
@@ -63,9 +64,17 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title, overview, genres }) =>
     })
   };
 
+  const isOnline = () => {
+    let online;
+    NetInfo.addEventListener(state => {
+      online = state.isConnected
+    });
+    return online;
+  } 
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri: imageUrl }} style={styles.backgroundImage} />
+      <Image source={isOnline() ? { uri: imageUrl } : require('../../assets/images/no-image.png')} style={styles.backgroundImage} />
       <LinearGradient
         colors={['rgba(39, 38, 43, 0)',  'rgba(39, 38, 43, 0.3)', 'rgba(39, 38, 43, 0.8)', 'rgba(39, 38, 43, 1)']}
         style={styles.footer}
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: 'cover'
   },
   footer: {
     paddingBottom: 30,

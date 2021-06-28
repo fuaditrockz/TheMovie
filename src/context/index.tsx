@@ -24,7 +24,7 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
 
   useEffect(() => {
     NetInfo.addEventListener(state => {
-      if (!state.isConnected) {
+      if (state.isConnected) {
         console.log('ONLINE')
         SETUP_DATA();
       } else {
