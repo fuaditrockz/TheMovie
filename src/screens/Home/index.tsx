@@ -2,24 +2,22 @@
  * @format
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   View,
   Text,
   StyleSheet,
-  Image,
-  useWindowDimensions,
   StatusBar
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
-import { TheMovieContext } from '../context';
-import { textStyles } from '../constants/styles'
-import { Banner, Loading, Card, Error } from '../components'
+import { TheMovieContext } from '../../context';
+import { textStyles } from '../../constants/styles';
+import { Loading, Card, Error } from '../../components';
+import Banner from './Banner';
 
 interface SectionProps {
   sectionData: Array<string>;
@@ -101,7 +99,7 @@ const Home = () => {
 
   if (isLoading) {
     return <Loading />
-  } else if (isError || isOnline === false) {
+  } else if (isError || isOnline() === false) {
     return <Error />
   } else {
     const {

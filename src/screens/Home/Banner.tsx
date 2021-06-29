@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Octicon from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
 
-import { textStyles } from '../constants/styles'
+import { textStyles } from '../../constants/styles'
 interface BannerProps {
   imageUrl: string;
   title: string;
@@ -74,7 +74,7 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title, overview, genres }) =>
 
   return (
     <View style={styles.container}>
-      <Image source={isOnline() ? { uri: imageUrl } : require('../../assets/images/no-image.png')} style={styles.backgroundImage} />
+      <Image source={isOnline() ? { uri: imageUrl } : require('../../../assets/images/no-image.png')} style={styles.backgroundImage} />
       <LinearGradient
         colors={['rgba(39, 38, 43, 0)',  'rgba(39, 38, 43, 0.3)', 'rgba(39, 38, 43, 0.8)', 'rgba(39, 38, 43, 1)']}
         style={styles.footer}

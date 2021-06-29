@@ -40,11 +40,6 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
     return
   }
 
-  const updateStorageData = async (data) => {
-    await AsyncStorage.mergeItem('data_offline', JSON.stringify(data));
-    return
-  }
-
   const setStorageData = async (data) => {
     await AsyncStorage.setItem('data_offline', JSON.stringify(data));
     return
