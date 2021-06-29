@@ -39,20 +39,18 @@ const Info: React.FC<InfoProps>= ({
   isUsingBox,
 }) => {
   return (
-    <View style={{
-      marginTop: 10,
-      flex: 1,
-      alignItems: 'center',
-    }}> 
+    <View style={styles.infoContainer}> 
       <Text style={textStyles.mini}>{title}</Text>
-      <View style={{
-        backgroundColor: isUsingBox ? '#000' : null,
-        paddingHorizontal: isUsingBox ? 10 : 0,
-        maxWidth: 90,
-        alignItems: 'center',
-        borderRadius: 5,
-        marginTop: 5
-      }}>
+      <View style={[
+        styles.infoChildren,
+        {
+          backgroundColor: isUsingBox ? '#000' : null,
+          paddingHorizontal: isUsingBox ? 10 : 0,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 30
+        }
+      ]}>
         {children}
       </View>
     </View>
@@ -96,6 +94,8 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
   const renderReleaseDateAndDuration = () => {
     const releaseDate = moment(data.release_date).format("MMM Do YY");
     const duration = Math.floor(data.runtime / 60) + 'h' + ' ' + (data.runtime - 60) + 'm'
+    const voteAverage = data.vote_average
+    
     return (
       <View style={[styles.centerized, styles.flexDirectionRow, { marginBottom: 10 }]}>
         <Text style={[textStyles.normal, { marginHorizontal: 10 }]}>
@@ -108,6 +108,10 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
         <Dot />
         <View style={styles.rating}>
           <Text style={textStyles.mini}>{data.adult ? 'NC-17' : 'PG'}</Text>
+        </View>
+        <Dot />
+        <View style={styles.voteAverage}>
+          <Text style={textStyles.miniGreenBold}>{voteAverage * 10}%</Text>
         </View>
       </View>
     )
@@ -133,7 +137,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
           <Text style={textStyles.normalBold}>{data.original_language.toUpperCase()}</Text>
         </Info>
         <Info title='Revenue'>
-          <Text style={textStyles.normal}>{
+          <Text style={textStyles.miniBold}>{
             data.revenue === 0 ? '-' : (
               '$' + revenue
             )
@@ -150,7 +154,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
         <Text style={textStyles.section_title}>
           Overview
         </Text>
-        <Text style={textStyles.normal}>{data.overview}</Text>
+        <Text style={[textStyles.normalLight, { flex: 1 }]}>{data.overview}</Text>
       </View>
     )
   }
@@ -158,35 +162,16 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
   const renderProductionCompany = (i:Object) => {
     console.log(i)
     return (
-      <View style={{
-        marginHorizontal: 10,
-        marginVertical: 10,
-        maxWidth: 90,
-        flex: 1
-      }}>
+      <View style={styles.productionCompanyImageContainer}>
         {i.item.logo_path ? (
-          <View style={{
-            paddingHorizontal: 5, paddingVertical: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#fff',
-            height: 60,
-            width: 'auto',
-            borderRadius: 10,
-          }}>
+          <View style={styles.isImageContainer}>
             <Image
-                source={{ uri: `https://image.tmdb.org/t/p/w500${i.item.logo_path}` }}
-                style={{
-                  width: 60,
-                  height: 30,
-                  resizeMode: 'contain'
-                }}
+              source={{ uri: `https://image.tmdb.org/t/p/w500${i.item.logo_path}` }}
+              style={styles.productionCompanyImage}
             />
           </View>
         ) : (
-          <View style={{
-            height: 50, justifyContent: 'center', alignItems: 'center'
-          }}>
+          <View style={styles.noImageContainer}>
             <Text style={textStyles.mini}>No Image</Text>
           </View>
         )}
@@ -198,7 +183,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
   const renderProductionCompanies = () => {
     const { production_companies } = data
     return (
-      <SafeAreaView>
+      <View style={{ marginBottom: 20 }}>
         <Text style={textStyles.section_title}>
           Production Companies
         </Text>
@@ -210,8 +195,61 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
             renderItem={renderProductionCompany}
           />
         </View>
-      </SafeAreaView>
+      </View>
     )
+  }
+
+  const renderSpokenLanguages = () => {
+    return (
+      <View style={{ marginBottom: 20 }}>
+        <Text style={textStyles.section_title}>
+          Spoken Languages
+        </Text>
+        <View style={{
+          flexDirection: 'row',
+          marginTop: 10
+        }}>
+          {data.spoken_languages.map((i, index) => (
+            <View
+              key={index}
+              style={{
+                backgroundColor: '#000',
+                paddingHorizontal: 10, paddingVertical: 5,
+                marginHorizontal: 5,
+                borderRadius: 5,
+                alignItems: 'center', justifyContent: 'center'
+              }}
+            >
+              <Text style={[textStyles.bigLanguangeISO, { marginBottom: -10 }]}>{i.iso_639_1.toUpperCase()}</Text>
+              <Text style={textStyles.normalLight}>
+                {i.name}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  }
+
+  const renderProductionCountries = () => {
+    return (
+      <View style={{ marginBottom: 20 }}>
+        <Text style={textStyles.section_title}>
+          Production Countries
+        </Text>
+        <View>
+          {data.production_countries.map((i, index) => (
+            <View
+              key={index}
+            >
+              <Text style={textStyles.normalLight}>
+                {i.name} - ({i.iso_3166_1})
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
   }
   
   return (
@@ -233,6 +271,8 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
       </View>
       {renderOverview()}
       {renderProductionCompanies()}
+      {renderSpokenLanguages()}
+      {renderProductionCountries()}
     </View>
   );
 }
@@ -244,7 +284,8 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    marginBottom: -10
+    marginBottom: -10,
+    flex: 1,
   },
   centerized: {
     display: 'flex',
@@ -277,6 +318,49 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0.5, paddingHorizontal: 6,
     borderRadius: 5
+  },
+  voteAverage: {
+    marginHorizontal: 10,
+    borderColor: '#00ff00',
+    borderWidth: 1,
+    paddingVertical: 0.5, paddingHorizontal: 6,
+    borderRadius: 5
+  },
+  infoContainer: {
+    marginTop: 10,
+    flex: 1,
+    alignItems: 'center',
+  },
+  infoChildren: {
+    maxWidth: 90,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 5
+  },
+  productionCompanyImageContainer: {
+    marginHorizontal: 10,
+    marginVertical: 10,
+    maxWidth: 90,
+    flex: 1
+  },
+  isImageContainer: {
+    paddingHorizontal: 5, paddingVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    height: 60,
+    width: 'auto',
+    borderRadius: 10,
+  },
+  productionCompanyImage: {
+    width: 60,
+    height: 30,
+    resizeMode: 'contain'
+  },
+  noImageContainer: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   tagText: {
     color: '#000',

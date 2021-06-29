@@ -16,9 +16,19 @@ const textStyles = StyleSheet.create({
     color: '#fff',
     fontSize: 25,
   },
+  bigLanguangeISO: {
+    fontFamily: 'SF-Pro-Display-Medium',
+    color: '#fff',
+    fontSize: 25,
+  },
   normal: {
     fontFamily: 'SF-Pro-Display-Medium',
     color: '#fff',
+    fontSize: 16,
+  },
+  normalLight: {
+    fontFamily: 'SF-Pro-Display-Light',
+    color: '#f2f2f2',
     fontSize: 16,
   },
   normalBold: {
@@ -28,6 +38,16 @@ const textStyles = StyleSheet.create({
   },
   mini: {
     fontFamily: 'SF-Pro-Display-Light',
+    color: '#fff',
+    fontSize: 10,
+  },
+  miniGreenBold: {
+    fontFamily: 'SF-Pro-Display-Light',
+    color: '#00ff00',
+    fontSize: 10,
+  },
+  miniBold: {
+    fontFamily: 'SF-Pro-Display-Bold',
     color: '#fff',
     fontSize: 10,
   },
