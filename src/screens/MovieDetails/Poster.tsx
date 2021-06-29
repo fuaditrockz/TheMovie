@@ -8,7 +8,7 @@ interface PosterProps {
 const Poster: React.FC<PosterProps> = ({ imageUrl }) => {
   return (
     <View style={styles.container}>
-      <View style={{ height: 180, width: 125 }}>
+      <View style={{ height: 185, width: 125 }}>
         <Image
           source={{ uri: `https://image.tmdb.org/t/p/w500${imageUrl}` }}
           style={styles.image}

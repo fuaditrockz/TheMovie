@@ -24,7 +24,7 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
 
   useEffect(() => {
     NetInfo.addEventListener(state => {
-      if (state.isConnected) {
+      if (!state.isConnected) {
         console.log('ONLINE')
         SETUP_DATA();
       } else {
@@ -36,7 +36,7 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
 
   const SETUP_DATA = async () => {
     await fetchDataMovies();
-    await updateStorageData(dataMovies);
+    await setStorageData(dataMovies);
     return
   }
 

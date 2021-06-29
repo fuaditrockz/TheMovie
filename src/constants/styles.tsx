@@ -21,6 +21,21 @@ const textStyles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  normalBold: {
+    fontFamily: 'SF-Pro-Display-Bold',
+    color: '#fff',
+    fontSize: 14,
+  },
+  mini: {
+    fontFamily: 'SF-Pro-Display-Light',
+    color: '#fff',
+    fontSize: 10,
+  },
+  production_company: {
+    fontFamily: 'SF-Pro-Display-Black',
+    color: '#c2c2c2',
+    fontSize: 12
+  },
   genre: {
     fontFamily: 'SF-Pro-Display-Bold',
     color: '#fff',

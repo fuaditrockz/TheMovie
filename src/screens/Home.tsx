@@ -25,17 +25,10 @@ interface SectionProps {
   sectionData: Array<string>;
   title: string;
   isBigCard: boolean;
+  isOnline: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard }) => {
-  const isOnline = () => {
-    let online;
-    NetInfo.addEventListener(state => {
-      online = state.isConnected
-    });
-    return online;
-  };
-
+const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard, isOnline }) => {
   return (
     <View style={{ marginBottom: 20 }}>
       <View style={styles.title}>
@@ -71,6 +64,14 @@ const Home = () => {
   const { isLoading, isError, movies } = useContext(TheMovieContext);
   const statusBarHeight = StatusBar.currentHeight
 
+  const isOnline = () => {
+    let online;
+    NetInfo.addEventListener(state => {
+      online = state.isConnected
+    });
+    return online;
+  };
+
   const renderBanner = () => {
     const {
       popular
@@ -91,7 +92,7 @@ const Home = () => {
 
   const renderSection = (sectionData:any, title:string, isBigCard:boolean) => {
     if (sectionData) {
-      return <Section title={title} sectionData={sectionData.results} isBigCard={isBigCard} />
+      return <Section title={title} sectionData={sectionData.results} isBigCard={isBigCard} isOnline={isOnline} />
     }
     return null
   }
@@ -100,7 +101,7 @@ const Home = () => {
 
   if (isLoading) {
     return <Loading />
-  } else if (isError) {
+  } else if (isError || isOnline === false) {
     return <Error />
   } else {
     const {
