@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TheMovieContextProvider } from './context';
 import Home from './screens/Home';
 import MovieDetails from './screens/MovieDetails';
+import TVDetails from './screens/TVDetails';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const App = () => {
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="MovieDetails" component={MovieDetails} />
+          <Stack.Screen name="TVDetails" component={TVDetails} />
         </Stack.Navigator>
       </TheMovieContextProvider>
     </NavigationContainer>

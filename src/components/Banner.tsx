@@ -2,17 +2,19 @@ import React from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
-  useWindowDimensions,
+  Text,
   StatusBar
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { textStyles } from '../constants/styles';
 
 interface BannerProps {
   goBack: Object;
+  isMovie: boolean;
 }
 
-const Banner: React.FC<BannerProps> = ({ goBack }) => {
+const Banner: React.FC<BannerProps> = ({ goBack, isMovie }) => {
   const statusBarHeight = StatusBar.currentHeight
 
   return (
@@ -25,13 +27,21 @@ const Banner: React.FC<BannerProps> = ({ goBack }) => {
           }
         ]}
       >
-        <TouchableOpacity onPress={goBack}>
+        <TouchableOpacity
+          onPress={goBack}
+          style={{
+            flexDirection: 'row'
+          }}
+        >
           <MaterialIcons
             name="close"
             size={25}
             color="#fff"
             style={{ position: 'relative', top: 12, marginRight: 10 }}
           />
+          <Text style={textStyles.movie_title}>
+            {isMovie ? 'Movie' : 'TV Show'}
+          </Text>
         </TouchableOpacity>
       </LinearGradient>
   );

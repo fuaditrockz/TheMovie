@@ -23,10 +23,11 @@ interface SectionProps {
   sectionData: Array<string>;
   title: string;
   isBigCard: boolean;
+  isTVCard: boolean;
   isOnline: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard, isOnline }) => {
+const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard, isTVCard, isOnline }) => {
   return (
     <View style={{ marginBottom: 20 }}>
       <View style={styles.title}>
@@ -40,6 +41,7 @@ const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard, isOnli
               data={i}
               key={index}
               isBigCard={isBigCard}
+              isTVCard={isTVCard}
             />
           ))}
         </ScrollView>
@@ -57,6 +59,7 @@ const Section: React.FC<SectionProps> = ({ sectionData, title, isBigCard, isOnli
     </View>
   );
 }
+
 
 const Home = () => {
   const { isLoading, isError, movies } = useContext(TheMovieContext);
@@ -88,9 +91,27 @@ const Home = () => {
     return null
   }
 
-  const renderSection = (sectionData:any, title:string, isBigCard:boolean) => {
+  const renderSectionMovies = (sectionData:any, title:string, isBigCard:boolean) => {
     if (sectionData) {
-      return <Section title={title} sectionData={sectionData.results} isBigCard={isBigCard} isOnline={isOnline} />
+      return <Section
+        title={title}
+        sectionData={sectionData.results}
+        isBigCard={isBigCard}
+        isOnline={isOnline}
+      />
+    }
+    return null
+  }
+
+  const renderSectionTVs = (sectionData:any, title:string, isBigCard:boolean) => {
+    if (sectionData) {
+      return <Section
+        title={title}
+        sectionData={sectionData.results}
+        isBigCard={isBigCard}
+        isOnline={isOnline}
+        isTVCard
+      />
     }
     return null
   }
@@ -106,7 +127,8 @@ const Home = () => {
       popular,
       top_rated,
       upcoming,
-      now_playing
+      now_playing,
+      popular_tv
     } = movies;
     return (
       <SafeAreaView style={styles.bgBlack}>
@@ -123,10 +145,11 @@ const Home = () => {
         </LinearGradient>
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.bgBlack}>
           {renderBanner()}
-          {renderSection(popular, 'Popular Movies', true)}
-          {renderSection(top_rated, 'Top Rated Movies', false)}
-          {renderSection(upcoming, 'Upcoming Movies', false)}
-          {renderSection(now_playing, 'Now Playing Movies', false)}
+          {renderSectionMovies(popular, 'Popular Movies', true)}
+          {renderSectionMovies(top_rated, 'Top Rated Movies', false)}
+          {renderSectionMovies(upcoming, 'Upcoming Movies', false)}
+          {renderSectionMovies(now_playing, 'Now Playing Movies', false)}
+          {renderSectionTVs(popular_tv, 'Popular TV Shows', false)}
         </ScrollView>
       </SafeAreaView>
     );

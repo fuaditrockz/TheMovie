@@ -5,14 +5,15 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  SafeAreaView
+  ScrollView
 } from 'react-native';
 import moment from 'moment';
 import Octicon from 'react-native-vector-icons/Octicons';
 
 import { textStyles } from '../../constants/styles';
 
-interface MainInformationProps {
+
+interface TVDetailInformationProps {
   data: Object;
 }
 
@@ -48,7 +49,7 @@ const Info: React.FC<InfoProps>= ({
           paddingHorizontal: isUsingBox ? 10 : 0,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 40
+          height: 40,
         }
       ]}>
         {children}
@@ -57,12 +58,12 @@ const Info: React.FC<InfoProps>= ({
   )
 }
 
-const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
+const TVDetailInformation: React.FC<TVDetailInformationProps>= ({ data }) => {
 
   const renderTitle = () => {
     return (
       <Text style={[textStyles.movie_title, styles.title]}>
-        {data.original_title + `(` + moment(data.release_date).format("yyyy") + `)`}
+        {data.name + `(` + moment(data.first_air_date).format("yyyy") + `)`}
       </Text>
     );
   }
@@ -92,16 +93,14 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
   }
 
   const renderReleaseDateAndDuration = () => {
-    const releaseDate = moment(data.release_date).format("MMM Do YY");
-    const duration = Math.floor(data.runtime / 60) + 'h' + ' ' + (data.runtime - 60) + 'm'
-    const voteAverage = data.vote_average
+    const firstAirDate = moment(data.first_air_date).format("MMM Do YY");
+    const duration = data.episode_run_time + 'mins'
+    const voteAverage = data.vote_average;
+    const episodes = data.number_of_episodes;
+    const seasons = data.seasons;
     
     return (
       <View style={[styles.centerized, styles.flexDirectionRow, { marginBottom: 10 }]}>
-        <Text style={[textStyles.normal, { marginHorizontal: 10 }]}>
-          {releaseDate}
-        </Text>
-        <Dot />
         <Text style={[textStyles.normal, { marginHorizontal: 10 }]}>
           {duration}
         </Text>
@@ -143,21 +142,74 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
         <Info title='Original Language' isUsingBox>
           <Text style={textStyles.normalBold}>{data.original_language.toUpperCase()}</Text>
         </Info>
-        <Info title='Revenue'>
-          <Text style={textStyles.miniBold}>{
-            data.revenue === 0 ? '-' : (
-              '$' + revenue
+      </View>
+    )
+  }
+
+  const renderSeasons = () => {
+    return (
+      <View style={{ marginBottom: 20 }}>
+        <View style={{ paddingHorizontal: 10 }}>
+          <Text style={textStyles.section_title}>
+            Seasons
+          </Text>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {data.seasons.map((i, index) => {
+            return (
+              <View style={{ paddingHorizontal: 5 }} key={index}>
+                <View>
+                  {i.poster_path ? (
+                    <Image
+                      source={{ uri: `https://image.tmdb.org/t/p/w500${i.poster_path}` }}
+                      style={{
+                        width: 120, height: 180,
+                        resizeMode: 'cover',
+                        borderRadius: 5,
+                      }}
+                     />
+                    ) : (
+                      <View style={{
+                        width: 120, height: 180,
+                        borderRadius: 5,
+                        backgroundColor: '#949494',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Text style={textStyles.mini}>No image available</Text>
+                      </View>
+                    )}
+                  <View style={{
+                    position: 'absolute',
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderBottomRightRadius: 5,
+                    borderBottomLeftRadius: 5,
+                    bottom: 0,
+                    paddingBottom: 5
+                  }}>
+                    <Text style={[textStyles.normal, { marginBottom: -10 }]}>
+                      {i.name}
+                    </Text>
+                    <Text style={[textStyles.miniBold, { textAlign: 'center' }]}>
+                      {i.episode_count} Episodes
+                    </Text>
+                  </View>
+                </View>
+                
+              </View>
             )
-          }</Text>
-        </Info>
+          })}
+        </ScrollView>
       </View>
     )
   }
 
   const renderOverview = () => {
-
     return (
-      <View style={{ marginBottom: 10 }}>
+      <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
         <Text style={textStyles.section_title}>
           Overview
         </Text>
@@ -190,7 +242,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
   const renderProductionCompanies = () => {
     const { production_companies } = data
     return (
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
         <Text style={textStyles.section_title}>
           Production Companies
         </Text>
@@ -208,7 +260,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
 
   const renderSpokenLanguages = () => {
     return (
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
         <Text style={textStyles.section_title}>
           Spoken Languages
         </Text>
@@ -240,7 +292,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
 
   const renderProductionCountries = () => {
     return (
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
         <Text style={textStyles.section_title}>
           Production Countries
         </Text>
@@ -276,6 +328,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
           {renderOtherInfo()}
         </View>
       </View>
+      {renderSeasons()}
       {renderOverview()}
       {renderProductionCompanies()}
       {renderSpokenLanguages()}
@@ -287,7 +340,7 @@ const MainInformation: React.FC<MainInformationProps>= ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#27262b',
-    minHeight: 600, paddingHorizontal: 10
+    height: 1150
   },
   title: {
     textAlign: 'center',
@@ -376,4 +429,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MainInformation
+export default TVDetailInformation

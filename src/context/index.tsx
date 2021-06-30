@@ -18,13 +18,14 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
     top_rated: null,
     upcoming: null,
     now_playing: null,
+    popular_tv: null
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     NetInfo.addEventListener(state => {
-      if (!state.isConnected) {
+      if (state.isConnected) {
         console.log('ONLINE')
         SETUP_DATA();
       } else {
@@ -53,11 +54,25 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
       setIsLoading(false);
     } else {
       setIsError(true);
+      setIsLoading(false);
     }
   }
 
   const fetchMovies = async (moviesType: string) => {
     const url = `https://api.themoviedb.org/3/movie/${moviesType}?api_key=${API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data.status_code === 34 || data.status_code === 7) {
+      throw new Error("error");
+    } else {
+      console.log('0')
+      return data;
+    }
+  }
+
+  const fetchTV = async (tvType: string) => {
+    const url = `https://api.themoviedb.org/3/tv/${tvType}?api_key=${API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
     
@@ -76,7 +91,8 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
         fetchMovies('popular'),
         fetchMovies('top_rated'),
         fetchMovies('upcoming'),
-        fetchMovies('now_playing')
+        fetchMovies('now_playing'),
+        fetchTV('popular')
       ]).then((i:Array<object>) => {
         console.log('1')
         setDataMovies({
@@ -84,6 +100,7 @@ const TheMovieContextProvider: FunctionComponent = ({children}) => {
           top_rated: i[1],
           upcoming: i[2],
           now_playing: i[3],
+          popular_tv: i[4],
         });
         return dataMovies;
       })
