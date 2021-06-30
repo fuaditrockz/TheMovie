@@ -340,7 +340,7 @@ const TVDetailInformation: React.FC<TVDetailInformationProps>= ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#27262b',
-    height: 1150
+    minHeight: 1200
   },
   title: {
     textAlign: 'center',

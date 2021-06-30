@@ -30,7 +30,8 @@ const Banner: React.FC<BannerProps> = ({ goBack, isMovie }) => {
         <TouchableOpacity
           onPress={goBack}
           style={{
-            flexDirection: 'row'
+            flexDirection: 'row',
+            justifyContent: 'center'
           }}
         >
           <MaterialIcons
